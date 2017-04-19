@@ -3,9 +3,9 @@ using TableCopyLibrary;
 using System.Threading.Tasks;
 using System;
 
-namespace XUnitTestProject1
+namespace XUnitTestProject
 {
-    public class UnitTest1
+    public class UnitTest
     {
         const string sourceConnectionString = "DefaultEndpointsProtocol=https;AccountName=mt1;AccountKey=O9+FoFPCQ4wqqfMJLm5I1zp7sePAgGGfowvDmCnGBt+AKlrdTXGOJ8QuzoQWz7yTsKPiOvBRE/8PfW5kRzzsTg==;EndpointSuffix=core.windows.net";
         const string sourceTableName = "weathertable";
