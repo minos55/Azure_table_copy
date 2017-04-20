@@ -13,8 +13,8 @@ namespace TableCopyLibrary
         {
             Log.Logger = new LoggerConfiguration()
                 .WriteTo.LiterateConsole()
-                    .WriteTo.RollingFile("log-{Date}.txt", outputTemplate: "{Timestamp:yyyy-MM-dd HH:mm:ss} [{Level}] {Message}{NewLine}{Exception}")
-                    .CreateLogger();
+                .WriteTo.RollingFile("log-{Date}.txt", outputTemplate: "{Timestamp:yyyy-MM-dd HH:mm:ss} [{Level}] {Message}{NewLine}{Exception}")
+                .CreateLogger();
 
         }
 
@@ -22,38 +22,18 @@ namespace TableCopyLibrary
         {
             try
             {
-                CloudStorageAccount sourceStorageAccount;
-                CloudStorageAccount targetStorageAccount;
-                bool source = CloudStorageAccount.TryParse(_sourceConnectionString, out sourceStorageAccount);
-                bool target = CloudStorageAccount.TryParse(_sourceConnectionString, out targetStorageAccount);
+                var sourceStorageAccount =GetCloudStorageAccount(_sourceConnectionString);
+                var targetStorageAccount = GetCloudStorageAccount(_targetConnectionString); ;
 
-                if (!source)
-                {
-                    throw new Exception("Source connection string is wrong.");
-                }
-
-                if (!target)
-                {
-                    throw new Exception("Target connection string is wrong.");
-                }
-
-                var sourceTableClient = sourceStorageAccount.CreateCloudTableClient();
-
-                Log.Information("Connected to {Connection}", sourceStorageAccount);
-
-                var targetTableClient = targetStorageAccount.CreateCloudTableClient();
-
-                Log.Information("Connected to {Connection}", targetStorageAccount);
-
-                var sourceTable = sourceTableClient.GetTableReference(_sourceTableName);
+                var sourceTable = GetTable(sourceStorageAccount, _sourceTableName);
                 await sourceTable.CreateIfNotExistsAsync();
-                var targetTable = sourceTableClient.GetTableReference(_targetTableName);
+
+                var targetTable = GetTable(targetStorageAccount, _targetTableName);
                 await targetTable.CreateIfNotExistsAsync();
 
 
                 var tableQuery = new TableQuery().Take(_batchSize);
-
-
+                
                 TableContinuationToken continuationToken = null;
                 do
                 {
@@ -90,6 +70,24 @@ namespace TableCopyLibrary
                 Log.Error(ex.Message);
             }
             return false;
+        }
+
+        private CloudStorageAccount GetCloudStorageAccount(string connectionString)
+        {
+            CloudStorageAccount StorageAccount = null;
+            bool test = CloudStorageAccount.TryParse(connectionString, out StorageAccount);
+            if (!test)
+            {
+                throw new Exception("Connection string is wrong.");
+            }
+            return StorageAccount;
+        }
+        private CloudTable GetTable(CloudStorageAccount storageAccount, string tableName)
+        {
+            var sourceTableClient = storageAccount.CreateCloudTableClient();
+            Log.Information("Connected to {Connection}", storageAccount);
+
+            return sourceTableClient.GetTableReference(tableName);
         }
     }
 }

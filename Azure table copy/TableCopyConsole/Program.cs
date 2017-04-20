@@ -1,12 +1,20 @@
-﻿using System;
+﻿using Microsoft.Extensions.Configuration;
+using System;
+using System.IO;
 using System.Threading.Tasks;
 using TableCopyLibrary;
 namespace ConsoleApp1
 {
     class Program
     {
+        public static IConfigurationRoot Configuration { get; set; }
         static void Main(string[] args)
         {
+            var builder = new ConfigurationBuilder()
+             .SetBasePath(Directory.GetCurrentDirectory())
+            .AddJsonFile("appsettings.json");
+
+            Configuration = builder.Build();
             var copy = new TableCopy();
             Task<bool> complete;
             if (args.Length == 5)
@@ -20,22 +28,16 @@ namespace ConsoleApp1
             }
             else
             {
-                string sourceConnectionString = GetString("Please enter source connection string");
-                string sourceTableName = GetString("Please enter source table name");
-                string targetConnectionString = GetString("Please enter target connection string");
-                string targetTableName = GetString("Please enter target table name");
-                int batchSize=GetInt("Please enter batch size");
+                string sourceConnectionString = Configuration["sourceConnectionString"];
+                string sourceTableName = Configuration["sourceTableName"];
+                string targetConnectionString = Configuration["targetConnectionString"];
+                string targetTableName = Configuration["targetTableName"];
+                int batchSize= int.Parse(Configuration["batchSize"]);
                 complete = copy.CopyAsync(sourceConnectionString, sourceTableName, targetConnectionString, targetTableName, batchSize);
             }
             Task.WaitAll(complete);
             Console.WriteLine("Press any key to close");
             Console.ReadKey();
-        }
-
-        static string GetString(string promptMessage)
-        {
-                Console.WriteLine(promptMessage);
-                return Console.ReadLine();
         }
 
         static int GetInt(string promptMessage)
