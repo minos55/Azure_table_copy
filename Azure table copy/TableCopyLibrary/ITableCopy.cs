@@ -1,11 +1,6 @@
-﻿using Microsoft.WindowsAzure.Storage;
-using Microsoft.WindowsAzure.Storage.Table;
-using Serilog;
-using System;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 
-namespace TableCopyLibrary
+namespace Nomnio.TableCopyLibrary.Interfaces
 {
     public interface ITableCopy
     {

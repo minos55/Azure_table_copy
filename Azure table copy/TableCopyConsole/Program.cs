@@ -1,19 +1,28 @@
 ﻿using Microsoft.Extensions.Configuration;
+using Nomnio.TableCopyLibrary;
+using Serilog;
 using System;
 using System.IO;
 using System.Threading.Tasks;
-using TableCopyLibrary;
 namespace ConsoleApp1
 {
     class Program
     {
+        
+
         public static IConfigurationRoot Configuration { get; set; }
         static void Main(string[] args)
         {
+
+            Log.Logger = new LoggerConfiguration()
+                .WriteTo.LiterateConsole(outputTemplate: "{Timestamp:yyyy-MM-dd HH:mm:ss} [{SourceContext}] [{Level}] {Message}{NewLine}{Exception}")
+                .WriteTo.RollingFile("log-{Date}.txt", outputTemplate: "{Timestamp:yyyy-MM-dd HH:mm:ss} [{SourceContext}] [{Level}] {Message}{NewLine}{Exception}")
+                .CreateLogger();
+
             var builder = new ConfigurationBuilder()
              .SetBasePath(Directory.GetCurrentDirectory())
             .AddJsonFile("appsettings.json");
-
+            
             Configuration = builder.Build();
             var copy = new TableCopy();
             Task<bool> complete;

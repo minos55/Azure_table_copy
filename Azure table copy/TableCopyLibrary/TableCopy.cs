@@ -1,21 +1,19 @@
 ﻿using Microsoft.WindowsAzure.Storage;
 using Microsoft.WindowsAzure.Storage.Table;
+using Nomnio.TableCopyLibrary.Interfaces;
 using Serilog;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace TableCopyLibrary
+namespace Nomnio.TableCopyLibrary
 {
     public class TableCopy : ITableCopy
     {
+        ILogger myLog;
         public TableCopy()
         {
-            Log.Logger = new LoggerConfiguration()
-                .WriteTo.LiterateConsole()
-                .WriteTo.RollingFile("log-{Date}.txt", outputTemplate: "{Timestamp:yyyy-MM-dd HH:mm:ss} [{Level}] {Message}{NewLine}{Exception}")
-                .CreateLogger();
-
+            myLog = Log.ForContext<TableCopy>();
         }
 
         public async Task<bool> CopyAsync(string _sourceConnectionString, string _sourceTableName, string _targetConnectionString, string _targetTableName, int _batchSize)
@@ -56,7 +54,7 @@ namespace TableCopyLibrary
                         {
                             batchOperation.InsertOrReplace(item);
 
-                            Log.Information($"Entity with the PartitionKey = ({item.PartitionKey}) and RowKey = ({item.RowKey}) copied from {_sourceTableName} into table {_targetTableName}.");
+                            myLog.Information($"Entity with the PartitionKey = ({item.PartitionKey}) and RowKey = ({item.RowKey}) copied from {_sourceTableName} into table {_targetTableName}.");
                         }
                         await targetTable.ExecuteBatchAsync(batchOperation);
                     }
@@ -67,7 +65,7 @@ namespace TableCopyLibrary
             }
             catch (Exception ex)
             {
-                Log.Error(ex.Message);
+                myLog.Error(ex.Message);
             }
             return false;
         }
@@ -85,7 +83,7 @@ namespace TableCopyLibrary
         private CloudTable GetTable(CloudStorageAccount storageAccount, string tableName)
         {
             var sourceTableClient = storageAccount.CreateCloudTableClient();
-            Log.Information("Connected to {Connection}", storageAccount);
+            myLog.Information("Connected to {Connection}", storageAccount);
 
             return sourceTableClient.GetTableReference(tableName);
         }
