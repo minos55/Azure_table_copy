@@ -26,20 +26,16 @@ namespace TableCopyTests
             var emptySourceTableName = RandomString(16);
             var targetTableName = RandomString(16);
 
-            var testStorageAccount = GetCloudStorageAccount(sourceConnectionString);
-            var testTable = await GetTableAsync(testStorageAccount, sourceTableName);
-            
-
             var emptySourceStorageAccount = GetCloudStorageAccount(_sourceConnectionString);
             var emptySourceTable = await GetTableAsync(emptySourceStorageAccount, emptySourceTableName);
             
 
             var targetStorageAccount = GetCloudStorageAccount(_targetConnectionString);
             var targetTable = await GetTableAsync(targetStorageAccount, targetTableName);
-            
+
 
             //get enteties that we will fill source table with
-            var fakeResults = await GetTableEntitiesAsync(testTable);
+            var fakeResults = PrepareTestData();
             await WriteToTableAsync(emptySourceTable,fakeResults);
             //copy our source table into target table
             var tableCopy = new TableCopy();
@@ -64,9 +60,6 @@ namespace TableCopyTests
             var emptySourceTableName = RandomString(16);
             var targetTableName = RandomString(16);
 
-            var testStorageAccount = GetCloudStorageAccount(sourceConnectionString);
-            var testTable = await GetTableAsync(testStorageAccount, sourceTableName);
-
             var emptySourceStorageAccount = GetCloudStorageAccount(_sourceConnectionString);
             var emptySourceTable = await GetTableAsync(emptySourceStorageAccount, emptySourceTableName);
 
@@ -74,7 +67,7 @@ namespace TableCopyTests
             var targetTable = await GetTableAsync(targetStorageAccount, targetTableName);
 
             //get enteties that we will fill source table with
-            var fakeResults = await GetTableEntitiesAsync(testTable);
+            var fakeResults = PrepareTestData();
             await WriteToTableAsync(emptySourceTable, fakeResults);
             //copy our source table into target table
             var tableCopy = new TableCopy();

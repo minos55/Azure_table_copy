@@ -82,5 +82,16 @@ namespace TableCopyTests
             }
             return true;
         }
+
+        protected IEnumerable<CityWeatherTableEntity> PrepareTestData()
+        {
+            var testData = new List<CityWeatherTableEntity>();
+            testData.Add(new CityWeatherTableEntity("Maribor", "SI", "Clouds", "Few Clouds", 13.8F));
+            testData.Add(new CityWeatherTableEntity("Ljubljana", "SI", "Sunny", "Warm", 20.8F));
+            testData.Add(new CityWeatherTableEntity("Celje", "SI", "Clouds", "Few Clouds", 13.8F));
+            testData.Add(new CityWeatherTableEntity("Ptuj", "SI", "Rain", "Large drops ", 5.8F));
+            testData.Add(new CityWeatherTableEntity("Murska sobota", "SI", "Snow", "Blizzard", -5.8F));
+            return testData;
+        }
     }
 }
