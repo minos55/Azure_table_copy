@@ -69,14 +69,16 @@ namespace TableCopyTests
             //get enteties that we will fill source table with
             var fakeResults = PrepareTestData();
             await WriteToTableAsync(emptySourceTable, fakeResults);
+
             //copy our source table into target table
             var tableCopy = new TableCopy();
             var test = await tableCopy.CopyAsync(_sourceConnectionString, emptySourceTableName, _targetConnectionString, targetTableName, _batchSize);
 
             //get Table enteties that we copied to check if they were copied
+            IEnumerable<CityWeatherTableEntity> expectedResults = await GetTableEntitiesAsync(emptySourceTable);
             IEnumerable<CityWeatherTableEntity> realResults = await GetTableEntitiesAsync(targetTable);
 
-            var t = CheckIfSame(fakeResults,realResults);
+            var t = CheckIfSame(expectedResults, realResults);
             await DeleteTableAsync(emptySourceTable);
             await DeleteTableAsync(targetTable);
 
