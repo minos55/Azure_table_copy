@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace BenchmarkTableCopyConsole
 {
-    
+    [SimpleJob(RunStrategy.ColdStart, launchCount: 1, warmupCount: 5, targetCount: 5, id: "FastAndDirtyJob")]
     public class BenchmarkTableCopy
     {
         private TableCopy Copy;
