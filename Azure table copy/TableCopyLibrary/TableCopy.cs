@@ -16,7 +16,7 @@ namespace Nomnio.TableCopyLibrary
             myLog = Log.ForContext<TableCopy>();
         }
 
-        public async Task<bool> CopyAsync(string _sourceConnectionString, string _sourceTableName, string _targetConnectionString, string _targetTableName, int _batchSize)
+        public async Task CopyAsync(string _sourceConnectionString, string _sourceTableName, string _targetConnectionString, string _targetTableName, int _batchSize)
         {
             try
             {
@@ -54,20 +54,18 @@ namespace Nomnio.TableCopyLibrary
                         {
                             batchOperation.InsertOrReplace(item);
 
-                            myLog.Information($"Entity with the PartitionKey = ({item.PartitionKey}) and RowKey = ({item.RowKey}) copied from {_sourceTableName} into table {_targetTableName}.");
+                            myLog.Information("Entity with the PartitionKey = ({PartitionKeyString}) and RowKey = ({RowKeyString}) copied from {Source} into table {Target}.", item.PartitionKey, item.RowKey, _sourceTableName, _targetTableName);
                         }
                         await targetTable.ExecuteBatchAsync(batchOperation);
                     }
 
                     // Loop until a null continuation token is received, indicating the end of the table.
                 } while (continuationToken != null);
-                return true;
             }
             catch (Exception ex)
             {
                 myLog.Error(ex.Message);
             }
-            return false;
         }
 
         private CloudStorageAccount GetCloudStorageAccount(string connectionString)
@@ -78,13 +76,15 @@ namespace Nomnio.TableCopyLibrary
             {
                 throw new Exception("Connection string is wrong.");
             }
+            else
+            {
+                myLog.Information("Connected to {Connection}", StorageAccount);
+            }
             return StorageAccount;
         }
         private CloudTable GetTable(CloudStorageAccount storageAccount, string tableName)
         {
             var sourceTableClient = storageAccount.CreateCloudTableClient();
-            myLog.Information("Connected to {Connection}", storageAccount);
-
             return sourceTableClient.GetTableReference(tableName);
         }
     }

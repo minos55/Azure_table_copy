@@ -25,7 +25,7 @@ namespace ConsoleApp1
             
             Configuration = builder.Build();
             var copy = new TableCopy();
-            Task<bool> complete;
+            Task complete;
             if (args.Length == 5)
             {
                 int batchSize;

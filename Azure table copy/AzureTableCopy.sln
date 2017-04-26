@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TableCopyConsole", "TableCo
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TableCopyTests", "XUnitTestProject\TableCopyTests.csproj", "{4D20AC78-BEE2-4C1D-BAD1-CF00947482E6}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BenchmarkTableCopyConsole", "BenchmarkTableCopyConsole\BenchmarkTableCopyConsole.csproj", "{F8B8B9A2-0B62-4563-8562-82015846CF2A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{4D20AC78-BEE2-4C1D-BAD1-CF00947482E6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4D20AC78-BEE2-4C1D-BAD1-CF00947482E6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4D20AC78-BEE2-4C1D-BAD1-CF00947482E6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F8B8B9A2-0B62-4563-8562-82015846CF2A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F8B8B9A2-0B62-4563-8562-82015846CF2A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F8B8B9A2-0B62-4563-8562-82015846CF2A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F8B8B9A2-0B62-4563-8562-82015846CF2A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
