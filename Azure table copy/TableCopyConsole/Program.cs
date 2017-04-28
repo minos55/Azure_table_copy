@@ -24,7 +24,7 @@ namespace ConsoleApp1
             .AddJsonFile("appsettings.json");
             
             Configuration = builder.Build();
-            var copy = new TableCopy();
+            var copy = new DynamicTableCopy();
             Task complete;
             if (args.Length == 5)
             {

@@ -1,7 +1,6 @@
 ﻿using BenchmarkDotNet.Attributes;
 using BenchmarkDotNet.Attributes.Jobs;
 using BenchmarkDotNet.Engines;
-using Microsoft.Extensions.Configuration;
 using Nomnio.TableCopyLibrary;
 using System.Threading.Tasks;
 
@@ -10,7 +9,7 @@ namespace BenchmarkTableCopyConsole
     [SimpleJob(RunStrategy.ColdStart, launchCount: 1, warmupCount: 5, targetCount: 5, id: "FastAndDirtyJob")]
     public class BenchmarkTableCopy
     {
-        private TableCopy Copy;
+        private DynamicTableCopy Copy;
         private string SourceConnectionString;
         private string SourceTableName;
         private string TargetConnectionString;
@@ -22,7 +21,7 @@ namespace BenchmarkTableCopyConsole
         [Setup]
         public void SetupData()
         {
-            Copy = new TableCopy();
+            Copy = new DynamicTableCopy();
 
             SourceConnectionString = "DefaultEndpointsProtocol=https;AccountName=mt1;AccountKey=O9+FoFPCQ4wqqfMJLm5I1zp7sePAgGGfowvDmCnGBt+AKlrdTXGOJ8QuzoQWz7yTsKPiOvBRE/8PfW5kRzzsTg==;EndpointSuffix=core.windows.net";
             SourceTableName = "weathertable";
