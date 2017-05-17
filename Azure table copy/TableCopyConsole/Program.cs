@@ -17,6 +17,7 @@ namespace ConsoleApp1
             Log.Logger = new LoggerConfiguration()
                 .WriteTo.LiterateConsole(outputTemplate: "{Timestamp:yyyy-MM-dd HH:mm:ss} [{SourceContext}] [{Level}] {Message}{NewLine}{Exception}")
                 .WriteTo.RollingFile("log-{Date}.txt", outputTemplate: "{Timestamp:yyyy-MM-dd HH:mm:ss} [{SourceContext}] [{Level}] {Message}{NewLine}{Exception}")
+                .WriteTo.Seq("http://localhost:5341")
                 .CreateLogger();
 
             var builder = new ConfigurationBuilder()

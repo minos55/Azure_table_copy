@@ -14,7 +14,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\TableCopyLibrary\TableCopyLibrary.csproj" />
+    <ProjectReference Include="..\TableCopyLibraryOld\TableCopyLibraryOld.csproj" />
   </ItemGroup>
 
 </Project>
